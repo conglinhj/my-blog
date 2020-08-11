@@ -15,12 +15,12 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('parent_id');
+            $table->bigInteger('parent_id')->default(0);
+            $table->foreignId('author_id')->constrained('users');
+            $table->foreignId('article_id')->constrained();
             $table->mediumText('content');
             $table->timestampsTz();
             $table->softDeletesTz('deleted_at', 0);
-            $table->foreignId('author_id')->constrained('users');
-            $table->foreignId('article_id')->constrained();
         });
     }
 

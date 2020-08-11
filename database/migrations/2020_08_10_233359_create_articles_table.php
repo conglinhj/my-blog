@@ -16,13 +16,15 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
+            $table->foreignId('author_id')->constrained('users');
+            $table->foreignId('category_id')->nullable()->constrained();
             $table->string('title');
-            $table->text('description');
-            $table->longText('content');
+            $table->text('description')->nullable();
+            $table->longText('content')->nullable();
+            $table->boolean('is_published')->default(0);
+            $table->timestampTz('published_at')->nullable();
             $table->timestampsTz();
             $table->softDeletesTz('deleted_at', 0);
-            $table->foreignId('author_id')->constrained('users');
-            $table->foreignId('category_id')->constrained();
         });
     }
 
