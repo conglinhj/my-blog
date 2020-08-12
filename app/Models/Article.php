@@ -11,7 +11,7 @@ class Article extends Model
 
     /**
      * The table associated with the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'articles';
@@ -74,6 +74,6 @@ class Article extends Model
      * Get the comments for the article.
      */
     public function comments() {
-        return $this->hasMany('App\Models\Comments');
+        return $this->hasMany('App\Models\Comment');
     }
 }

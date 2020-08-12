@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
@@ -10,7 +11,7 @@ class Comment extends Model
 
     /**
      * The table associated with the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'comments';
@@ -42,7 +43,7 @@ class Comment extends Model
      * Get the author that owns the comment
      */
     public function author() {
-        return $this->belongsTo('App\Models\User', 'author_id');
+        return $this->belongsTo('App\User', 'author_id');
     }
 
     /**
