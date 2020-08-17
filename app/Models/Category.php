@@ -40,6 +40,15 @@ class Category extends Model
     ];
 
     /**
+     * Auto generate slug with name
+     * @param string $value
+     */
+    public function setNameAttribute($value) {
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = preg_replace('/\s+/', '-', $value);
+    }
+
+    /**
      * Get the parent category of this
      */
     public function category() {

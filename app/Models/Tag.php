@@ -31,7 +31,6 @@ class Tag extends Model
      * @var array
      */
     protected $guarded = [
-        'slug',
         'created_at',
         'updated_at',
         'deleted_at'

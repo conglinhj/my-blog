@@ -2,63 +2,64 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\Comment as CommentResource;
+use App\Http\Requests\CommentStoreRequest;
+use App\Http\Requests\CommentUpdateRequest;
+use App\Models\Comment;
 
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        //
+        return CommentResource::collection(Comment::all());
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CommentStoreRequest $request
+     * @return CommentResource
      */
-    public function store(Request $request)
+    public function store(CommentStoreRequest $request)
     {
-        //
+        $comment = new Comment($request->only([]));
+        $comment->save();
+        return new CommentResource($comment);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return CommentResource
      */
     public function show($id)
     {
-        //
+        return new CommentResource(Comment::findOrFail($id));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param CommentUpdateRequest $request
+     * @param int $id
+     * @return CommentResource
      */
-    public function update(Request $request, $id)
+    public function update(CommentUpdateRequest $request, $id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $comment->fill($request->only([]));
+        $comment->save();
+        return new CommentResource($comment);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        Comment::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
     }
 }

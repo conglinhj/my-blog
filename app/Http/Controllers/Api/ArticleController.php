@@ -2,63 +2,64 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\Article as ArticleResource;
+use App\Http\Requests\ArticleStoreRequest;
+use App\Http\Requests\ArticleUpdateRequest;
+use App\Models\Article;
 
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        return [];
+        return ArticleResource::collection(Article::all());
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ArticleStoreRequest $request
+     * @return ArticleResource
      */
-    public function store(Request $request)
+    public function store(ArticleStoreRequest $request)
     {
-        //
+        $article = new Article($request->only([]));
+        $article->save();
+        return new ArticleResource($article);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return ArticleResource
      */
     public function show($id)
     {
-        return $id;
+        return new ArticleResource(Article::findOrFail($id));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ArticleUpdateRequest $request
+     * @param int $id
+     * @return ArticleResource
      */
-    public function update(Request $request, $id)
+    public function update(ArticleUpdateRequest $request, $id)
     {
-        //
+        $article = Article::findOrFail($id);
+        $article->fill($request->only([]));
+        $article->save();
+        return new ArticleResource($article);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        Article::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
     }
 }
