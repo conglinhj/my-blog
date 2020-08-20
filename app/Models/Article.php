@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -11,7 +12,7 @@ class Article extends Model
 
     /**
      * The table associated with the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'articles';
@@ -41,6 +42,9 @@ class Article extends Model
         'title',
         'description',
         'content',
+        'author_id',
+        'category_id',
+        'is_published'
     ];
 
     /**
@@ -57,14 +61,37 @@ class Article extends Model
     ];
 
     /**
+     * Auto generate slug with title
+     * @param string $value
+     */
+    public function setTitleAttribute($value) {
+        $this->attributes['title'] = $value;
+        $suffix = Carbon::now()->format('YmdHis');
+        $this->attributes['slug'] = preg_replace('/\s+/', '-', $value) . '_' . $suffix;
+    }
+
+    /**
+     * save the first publication date only
+     * @param boolean $value
+     */
+    public function setIsPublishedAttribute($value) {
+        $this->attributes['is_published'] = $value;
+        if ($this->is_published && !$this->published_at) {
+            $this->attributes['published_at'] = Carbon::now();
+        }
+    }
+
+    /**
      * Get the category that owns the article.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category() {
         return $this->belongsTo('App\Models\Category', 'category_id');
     }
 
     /**
-     * The tags that belong to the user.
+     * The tags that belong to the article.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tags() {
         return $this->belongsToMany('App\Models\Tag', 'article_tag', 'article_id', 'tag_id');
@@ -72,8 +99,9 @@ class Article extends Model
 
     /**
      * Get the comments for the article.
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function comments() {
-        return $this->hasMany('App\Models\Comments');
+        return $this->hasMany('App\Models\Comment');
     }
 }

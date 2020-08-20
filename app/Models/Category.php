@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
@@ -10,7 +11,7 @@ class Category extends Model
 
     /**
      * The table associated with the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'categories';
@@ -32,7 +33,6 @@ class Category extends Model
      * @var array
      */
     protected $guarded = [
-        'slug',
         'created_at',
         'updated_at',
         'deleted_at'
@@ -40,6 +40,7 @@ class Category extends Model
 
     /**
      * Get the parent category of this
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category() {
         return $this->belongsTo('App\Models\Category', 'parent_id');
@@ -47,6 +48,7 @@ class Category extends Model
 
     /**
      * Get the child categories of this
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function childCategories() {
         return $this->hasMany('App\Models\Category', 'parent_id');
@@ -54,6 +56,7 @@ class Category extends Model
 
     /**
      * Get the articles of the category
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function articles() {
         return $this->hasMany('App\Models\Article', 'category_id');
