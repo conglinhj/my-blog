@@ -50,6 +50,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        /**
+         * TODO: fixed response format
+         * with APP_DEBUG=false, response message still has filename inside
+         */
         return parent::render($request, $exception);
     }
 }

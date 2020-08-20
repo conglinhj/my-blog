@@ -57,14 +57,25 @@ class Article extends Model
     ];
 
     /**
+     * Auto generate slug with title
+     * @param string $value
+     */
+    public function setTitleAttribute($value) {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = preg_replace('/\s+/', '-', $value);
+    }
+
+    /**
      * Get the category that owns the article.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category() {
         return $this->belongsTo('App\Models\Category', 'category_id');
     }
 
     /**
-     * The tags that belong to the user.
+     * The tags that belong to the article.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tags() {
         return $this->belongsToMany('App\Models\Tag', 'article_tag', 'article_id', 'tag_id');
@@ -72,6 +83,7 @@ class Article extends Model
 
     /**
      * Get the comments for the article.
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function comments() {
         return $this->hasMany('App\Models\Comment');

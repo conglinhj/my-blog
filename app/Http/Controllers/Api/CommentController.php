@@ -26,7 +26,11 @@ class CommentController extends Controller
      */
     public function store(CommentStoreRequest $request)
     {
-        $comment = new Comment($request->only([]));
+        $comment = new Comment($request->only([
+            'parent_id',
+            'article_id',
+            'content'
+        ]));
         $comment->save();
         return new CommentResource($comment);
     }
@@ -48,7 +52,7 @@ class CommentController extends Controller
     public function update(CommentUpdateRequest $request, $id)
     {
         $comment = Comment::findOrFail($id);
-        $comment->fill($request->only([]));
+        $comment->fill($request->only([ 'content' ]));
         $comment->save();
         return new CommentResource($comment);
     }
@@ -59,7 +63,6 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        Comment::findOrFail($id)->delete();
-        return response()->json(['success' => true]);
+        return new JsonResponse(Comment::findOrFail($id)->delete());
     }
 }

@@ -26,7 +26,11 @@ class CategoryController extends Controller
      */
     public function store(CategoryStoreRequest $request)
     {
-        $category = new Category($request->only('name','parent_id', 'description'));
+        $category = new Category($request->only([
+            'name',
+            'parent_id',
+            'description'
+        ]));
         $category->save();
         return new CategoryResource($category);
     }
@@ -48,7 +52,11 @@ class CategoryController extends Controller
     public function update(CategoryUpdateRequest $request, $id)
     {
         $category = Category::findOrFail($id);
-        $category->fill($request->only('name','parent_id', 'description'));
+        $category->fill($request->only([
+            'name',
+            'parent_id',
+            'description'
+        ]));
         $category->save();
         return new CategoryResource($category);
     }
@@ -59,7 +67,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::findOrFail($id)->delete();
-        return response()->json(['success' => true]);
+        return new JsonResponse(Category::findOrFail($id)->delete());
     }
 }

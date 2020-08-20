@@ -35,4 +35,12 @@ class Tag extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    /**
+     * The articles that belong to the tag.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function articles() {
+        return $this->belongsToMany('App\Models\Article', 'article_tag', 'tag_id', 'article_id');
+    }
 }
