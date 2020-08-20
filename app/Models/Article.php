@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -41,6 +42,9 @@ class Article extends Model
         'title',
         'description',
         'content',
+        'author_id',
+        'category_id',
+        'is_published'
     ];
 
     /**
@@ -62,7 +66,19 @@ class Article extends Model
      */
     public function setTitleAttribute($value) {
         $this->attributes['title'] = $value;
-        $this->attributes['slug'] = preg_replace('/\s+/', '-', $value);
+        $suffix = Carbon::now()->format('YmdHis');
+        $this->attributes['slug'] = preg_replace('/\s+/', '-', $value) . '_' . $suffix;
+    }
+
+    /**
+     * save the first publication date only
+     * @param boolean $value
+     */
+    public function setIsPublishedAttribute($value) {
+        $this->attributes['is_published'] = $value;
+        if ($this->is_published && !$this->published_at) {
+            $this->attributes['published_at'] = Carbon::now();
+        }
     }
 
     /**

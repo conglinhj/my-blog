@@ -25,7 +25,7 @@ class CategoryUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'parent_id' => "not_in:{$this->category}|exists:categories"
+            'parent_id' => "not_in:{$this->category}|exists:categories,id"
         ];
     }
 }

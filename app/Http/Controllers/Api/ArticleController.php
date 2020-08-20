@@ -9,6 +9,7 @@ use App\Http\Resources\Article as ArticleResource;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
 use App\Models\Article;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -26,7 +27,14 @@ class ArticleController extends Controller
      */
     public function store(ArticleStoreRequest $request)
     {
-        $article = new Article($request->only([]));
+        $article = new Article($request->only([
+            'title',
+            'description',
+            'content',
+            'category_id',
+            'is_published'
+        ]));
+        $article->author_id = 1;
         $article->save();
         return new ArticleResource($article);
     }
@@ -48,7 +56,13 @@ class ArticleController extends Controller
     public function update(ArticleUpdateRequest $request, $id)
     {
         $article = Article::findOrFail($id);
-        $article->fill($request->only([]));
+        $article->fill($request->only([
+            'title',
+            'description',
+            'content',
+            'category_id',
+            'is_published'
+        ]));
         $article->save();
         return new ArticleResource($article);
     }

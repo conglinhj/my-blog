@@ -9,6 +9,7 @@ use App\Http\Resources\Comment as CommentResource;
 use App\Http\Requests\CommentStoreRequest;
 use App\Http\Requests\CommentUpdateRequest;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -31,6 +32,7 @@ class CommentController extends Controller
             'article_id',
             'content'
         ]));
+        $comment->author_id = Auth::id();
         $comment->save();
         return new CommentResource($comment);
     }

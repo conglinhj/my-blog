@@ -24,8 +24,8 @@ class CommentStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'parent_id' => 'exists:categories',
-            'article_id'=> 'exists:articles',
+            'parent_id' => 'exists:categories,id',
+            'article_id'=> 'exists:articles,id',
             'content' => 'required'
         ];
     }

@@ -13,7 +13,7 @@ class ArticleUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class ArticleUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required',
+            'category_id' => 'exists:categories,id',
+            'is_published' => 'boolean'
         ];
     }
 }
