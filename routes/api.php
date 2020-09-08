@@ -19,6 +19,9 @@ Route::post('/login', 'Api\AuthController@login');
 Route::post('/logout', 'Api\AuthController@logout');
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/verify_access', function () {
+        return true;
+    });
 
     Route::get('/user', function (Request $request) {
         return $request->user();
