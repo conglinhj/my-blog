@@ -18,6 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name')->unique();
             $table->text('description')->nullable();
             $table->bigInteger('parent_id')->default(0);
+            $table->integer('level')->default(0);
             $table->timestampsTz();
             $table->softDeletesTz('deleted_at', 0);
         });

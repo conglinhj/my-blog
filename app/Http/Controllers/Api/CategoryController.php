@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\Category as CategoryResource;
+use App\Http\Resources\CategoryCollection;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\Category;
@@ -13,11 +13,11 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     /**
-     * @return AnonymousResourceCollection
+     * @return CategoryCollection
      */
     public function index()
     {
-        return CategoryResource::collection(Category::all());
+        return new CategoryCollection(Category::paginate(10));
     }
 
     /**
@@ -36,10 +36,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return CategoryResource
      */
-    public function show($id)
+    public function show(int $id)
     {
         return new CategoryResource(Category::findOrFail($id));
     }
@@ -49,7 +49,7 @@ class CategoryController extends Controller
      * @param int $id
      * @return CategoryResource
      */
-    public function update(CategoryUpdateRequest $request, $id)
+    public function update(CategoryUpdateRequest $request, int $id)
     {
         $category = Category::findOrFail($id);
         $category->fill($request->only([
@@ -65,7 +65,7 @@ class CategoryController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         return new JsonResponse(Category::findOrFail($id)->delete());
     }

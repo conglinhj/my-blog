@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tag extends Model
@@ -38,7 +39,7 @@ class Tag extends Model
 
     /**
      * The articles that belong to the tag.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function articles() {
         return $this->belongsToMany('App\Models\Article', 'article_tag', 'tag_id', 'article_id');

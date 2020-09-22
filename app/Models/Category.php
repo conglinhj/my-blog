@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\hasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
@@ -33,14 +35,32 @@ class Category extends Model
      * @var array
      */
     protected $guarded = [
+        'level',
         'created_at',
         'updated_at',
         'deleted_at'
     ];
 
     /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'deleted_at'
+    ];
+
+    /**
+     * @param int $value
+     */
+    protected function setParentIdAttribute(int $value) {
+        $this->attributes['parent_id'] = $value;
+        $this->attributes['level'] = $value ? $value + 1 : 0;
+    }
+
+    /**
      * Get the parent category of this
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function category() {
         return $this->belongsTo('App\Models\Category', 'parent_id');
@@ -48,7 +68,7 @@ class Category extends Model
 
     /**
      * Get the child categories of this
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     * @return hasMany
      */
     public function childCategories() {
         return $this->hasMany('App\Models\Category', 'parent_id');
@@ -56,7 +76,7 @@ class Category extends Model
 
     /**
      * Get the articles of the category
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     * @return hasMany
      */
     public function articles() {
         return $this->hasMany('App\Models\Article', 'category_id');
