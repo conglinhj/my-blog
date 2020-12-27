@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Resources;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -10,7 +10,7 @@ use App\Http\Requests\TagUpdateRequest;
 use App\Http\Resources\Tag as TagResource;
 use App\Models\Tag;
 
-class TagController extends Controller
+class TagResourceController extends Controller
 {
     /**
      * @return AnonymousResourceCollection

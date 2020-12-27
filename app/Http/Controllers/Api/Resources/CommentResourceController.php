@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Resources;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -11,7 +11,7 @@ use App\Http\Requests\CommentUpdateRequest;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
-class CommentController extends Controller
+class CommentResourceController extends Controller
 {
     /**
      * @return AnonymousResourceCollection

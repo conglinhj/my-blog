@@ -18,6 +18,9 @@ Route::post('/register', 'Api\AuthController@register');
 Route::post('/login', 'Api\AuthController@login');
 Route::post('/logout', 'Api\AuthController@logout');
 
+Route::get('/articles', 'Api\ArticleController@getList');
+Route::get('/articles/{id}', 'Api\ArticleController@getDetail');
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/verify_access', function () {
         return true;
@@ -27,11 +30,13 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::apiResources([
-        'articles' => 'Api\ArticleController',
-        'categories' => 'Api\CategoryController',
-        'tags' => 'Api\TagController',
-        'comments' => 'Api\CommentController',
-    ]);
+    Route::namespace('Api\Resources')->prefix('resources')->name('resources')->group(function () {
+        Route::apiResources([
+            'articles' => 'ArticleResourceController',
+            'categories' => 'CategoryResourceController',
+            'tags' => 'TagResourceController',
+            'comments' => 'CommentResourceController',
+        ]);
+    });
 });
 
