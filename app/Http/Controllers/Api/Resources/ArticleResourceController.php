@@ -45,7 +45,7 @@ class ArticleResourceController extends Controller
      */
     public function show(int $id)
     {
-        return new ArticleResource(Article::findOrFail($id));
+        return new ArticleResource(Article::with(['category', 'tags'])->findOrFail($id));
     }
 
     /**
@@ -64,6 +64,7 @@ class ArticleResourceController extends Controller
             'is_published'
         ]));
         $article->save();
+        $article->tags()->sync($request->get('tags', []));
         return new ArticleResource($article);
     }
 

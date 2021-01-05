@@ -31,6 +31,7 @@ class Article extends Model
      */
     protected $casts = [
         'is_published' => 'boolean',
+        'published_at' => 'datetime',
     ];
 
     /**
@@ -103,5 +104,13 @@ class Article extends Model
      */
     public function comments() {
         return $this->hasMany('App\Models\Comment');
+    }
+
+    /**
+     * Get all published articles
+     * @return mixed
+     */
+    public static function getPublished() {
+        return self::where([['is_published', true]])->get();
     }
 }

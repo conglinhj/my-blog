@@ -26,7 +26,8 @@ class ArticleUpdateRequest extends FormRequest
         return [
             'title' => 'required',
             'category_id' => 'exists:categories,id',
-            'is_published' => 'boolean'
+            'is_published' => 'boolean',
+            'tags' => 'array',
         ];
     }
 }

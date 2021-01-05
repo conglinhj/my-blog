@@ -16,7 +16,7 @@ class ArticleController extends Controller
      */
     public function getList()
     {
-        return ArticleResource::collection(Article::all());
+        return ArticleResource::collection(Article::getPublished());
     }
 
     /**
