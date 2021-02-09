@@ -28,7 +28,7 @@ class Article extends JsonResource
             'category_id' => $this->parent_id,
             'category' => new CategoryResource($this->category),
             'tags' => TagResource::collection($this->tags),
-            'published_at' => $this->published_at->timestamp,
+            'published_at' => !empty($this->published_at) ? $this->published_at->timestamp : null,
             'created_at' => $this->created_at->timestamp,
             'updated_at' => $this->updated_at->timestamp
         ];

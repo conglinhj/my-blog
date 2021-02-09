@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
@@ -61,6 +64,12 @@ class Article extends Model
         'deleted_at'
     ];
 
+    public static $BULK_ACTION_NAMES = [
+        'publish',
+        'draft',
+        'delete'
+    ];
+
     /**
      * Auto generate slug with title
      * @param string $value
@@ -84,25 +93,26 @@ class Article extends Model
 
     /**
      * Get the category that owns the article.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function category() {
+    public function category(): BelongsTo {
         return $this->belongsTo('App\Models\Category', 'category_id');
     }
 
     /**
      * The tags that belong to the article.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function tags() {
+    public function tags(): BelongsToMany {
         return $this->belongsToMany('App\Models\Tag', 'article_tag', 'article_id', 'tag_id');
     }
 
     /**
      * Get the comments for the article.
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     * @return hasMany
      */
-    public function comments() {
+    public function comments(): hasMany
+    {
         return $this->hasMany('App\Models\Comment');
     }
 
@@ -112,5 +122,23 @@ class Article extends Model
      */
     public static function getPublished() {
         return self::where([['is_published', true]])->get();
+    }
+
+    /**
+     * @return bool
+     */
+    public function publish(): bool
+    {
+        $this->is_published = true;
+        return $this->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function draft(): bool
+    {
+        $this->is_published = false;
+        return $this->save();
     }
 }

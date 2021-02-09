@@ -37,6 +37,10 @@ Route::middleware('auth:sanctum')->group(function () {
             'tags' => 'TagResourceController',
             'comments' => 'CommentResourceController',
         ]);
+
+        Route::post('articles/publish/{id}', 'ArticleResourceController@publish');
+        Route::post('articles/draft/{id}', 'ArticleResourceController@draft');
+        Route::post('articles/bulk', 'ArticleResourceController@bulkAction');
     });
 });
 
