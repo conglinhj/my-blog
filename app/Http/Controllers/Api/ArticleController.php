@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Article as ArticleResource;
+use App\Http\Resources\ArticleResourceCollection;
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 
 class ArticleController extends Controller
 {
     /**
-     * @return AnonymousResourceCollection
+     * @return ArticleResourceCollection
      */
-    public function getList()
+    public function getList(): ArticleResourceCollection
     {
-        return ArticleResource::collection(Article::getPublished());
+        return new ArticleResourceCollection(Article::getPublished());
     }
 
     /**

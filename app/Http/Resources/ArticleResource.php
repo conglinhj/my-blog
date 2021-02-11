@@ -7,7 +7,7 @@ use App\Http\Resources\Tag as TagResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Article extends JsonResource
+class ArticleResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api\Resources;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Article as ArticleResource;
+use App\Http\Requests\ArticleCollectionRequest;
+use App\Http\Resources\ArticleResourceCollection;
+use App\Http\Resources\ArticleResource;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
 use App\Http\Requests\ArticleBulkDeleteRequest;
@@ -14,11 +15,26 @@ use App\Models\Article;
 class ArticleResourceController extends Controller
 {
     /**
-     * @return AnonymousResourceCollection
+     * @param ArticleCollectionRequest $request
+     * @return ArticleResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(ArticleCollectionRequest $request): ArticleResourceCollection
     {
-        return ArticleResource::collection(Article::all());
+        $query = Article::query();
+
+        if ($request->get('with_deleted', false)) {
+            $query->withTrashed();
+        }
+
+        $sort_conditions = explode(',', $request->get('sort', ''));
+        foreach ($sort_conditions as $condition) {
+            $exploded = explode(':', $condition);
+            if (count($exploded) == 2) {
+                $query->orderBy($exploded[0], $exploded[1]);
+            }
+        }
+
+        return new ArticleResourceCollection($query->paginate($request->get('limit', 10)));
     }
 
     /**
