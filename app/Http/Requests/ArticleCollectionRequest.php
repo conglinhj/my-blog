@@ -29,6 +29,7 @@ class ArticleCollectionRequest extends FormRequest
             'page' => 'numeric',
             'limit' => 'numeric',
             'sort' => [
+                'nullable',
                 'starts_with:id,title,is_published,created_at,updated_at,deleted_at,published_at',
             ],
             'with_deleted' => 'boolean',

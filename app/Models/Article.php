@@ -71,6 +71,19 @@ class Article extends Model
     ];
 
     /**
+     * Perform any actions required after the model boots.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::deleting(function ($article) {
+            $article->is_published = false;
+            $article->save();
+        });
+    }
+
+    /**
      * Auto generate slug with title
      * @param string $value
      */

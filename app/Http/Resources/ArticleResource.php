@@ -30,7 +30,8 @@ class ArticleResource extends JsonResource
             'tags' => TagResource::collection($this->tags),
             'published_at' => !empty($this->published_at) ? $this->published_at->timestamp : null,
             'created_at' => $this->created_at->timestamp,
-            'updated_at' => $this->updated_at->timestamp
+            'updated_at' => $this->updated_at->timestamp,
+            'deleted_at' => !empty($this->deleted_at) ? $this->deleted_at->timestamp : null,
         ];
     }
 }
