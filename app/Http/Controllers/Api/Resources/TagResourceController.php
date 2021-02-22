@@ -15,7 +15,7 @@ class TagResourceController extends Controller
     /**
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return TagResource::collection(Tag::all());
     }
@@ -24,7 +24,7 @@ class TagResourceController extends Controller
      * @param TagStoreRequest $request
      * @return TagResource
      */
-    public function store(TagStoreRequest $request)
+    public function store(TagStoreRequest $request): TagResource
     {
         $tag = new Tag($request->only(['name']));
         $tag->save();
@@ -35,7 +35,7 @@ class TagResourceController extends Controller
      * @param int $id
      * @return TagResource
      */
-    public function show($id)
+    public function show($id): TagResource
     {
         return new TagResource(Tag::findOrFail($id));
     }
@@ -45,7 +45,7 @@ class TagResourceController extends Controller
      * @param int $id
      * @return TagResource
      */
-    public function update(TagUpdateRequest $request, $id)
+    public function update(TagUpdateRequest $request, $id): TagResource
     {
         $tag = Tag::findOrFail($id);
         $tag->fill($request->only(['name']));
@@ -57,7 +57,7 @@ class TagResourceController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         return new JsonResponse(Tag::findOrFail($id)->delete());
     }

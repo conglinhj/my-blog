@@ -62,7 +62,8 @@ class Category extends Model
      * Get the parent category of this
      * @return BelongsTo
      */
-    public function category() {
+    public function category(): BelongsTo
+    {
         return $this->belongsTo('App\Models\Category', 'parent_id');
     }
 
@@ -70,7 +71,8 @@ class Category extends Model
      * Get the child categories of this
      * @return hasMany
      */
-    public function childCategories() {
+    public function childrenCategories(): hasMany
+    {
         return $this->hasMany('App\Models\Category', 'parent_id');
     }
 
@@ -78,7 +80,8 @@ class Category extends Model
      * Get the articles of the category
      * @return hasMany
      */
-    public function articles() {
+    public function articles(): hasMany
+    {
         return $this->hasMany('App\Models\Article', 'category_id');
     }
 }

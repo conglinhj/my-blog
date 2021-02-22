@@ -41,6 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('articles/publish/{id}', 'ArticleResourceController@publish');
         Route::post('articles/draft/{id}', 'ArticleResourceController@draft');
         Route::post('articles/bulk', 'ArticleResourceController@bulkAction');
+
+        Route::get('categories/{id}/possible_parent_categories', 'CategoryResourceController@getPossibleParentCategories');
     });
 });
 

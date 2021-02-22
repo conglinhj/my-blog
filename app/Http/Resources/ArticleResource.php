@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\Category as CategoryResource;
+use App\Http\Resources\CategoryResources as CategoryResource;
 use App\Http\Resources\Tag as TagResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

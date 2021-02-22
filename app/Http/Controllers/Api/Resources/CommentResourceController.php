@@ -16,7 +16,7 @@ class CommentResourceController extends Controller
     /**
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return CommentResource::collection(Comment::all());
     }
@@ -25,7 +25,7 @@ class CommentResourceController extends Controller
      * @param CommentStoreRequest $request
      * @return CommentResource
      */
-    public function store(CommentStoreRequest $request)
+    public function store(CommentStoreRequest $request): CommentResource
     {
         $comment = new Comment($request->only([
             'parent_id',
@@ -41,7 +41,7 @@ class CommentResourceController extends Controller
      * @param int $id
      * @return CommentResource
      */
-    public function show($id)
+    public function show($id): CommentResource
     {
         return new CommentResource(Comment::findOrFail($id));
     }
@@ -51,7 +51,7 @@ class CommentResourceController extends Controller
      * @param int $id
      * @return CommentResource
      */
-    public function update(CommentUpdateRequest $request, $id)
+    public function update(CommentUpdateRequest $request, $id): CommentResource
     {
         $comment = Comment::findOrFail($id);
         $comment->fill($request->only([ 'content' ]));
@@ -63,7 +63,7 @@ class CommentResourceController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         return new JsonResponse(Comment::findOrFail($id)->delete());
     }
