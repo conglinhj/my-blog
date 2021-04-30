@@ -130,14 +130,6 @@ class Article extends Model
     }
 
     /**
-     * Get all published articles
-     * @return mixed
-     */
-    public static function getPublished() {
-        return self::where([['is_published', true]])->get();
-    }
-
-    /**
      * @return bool
      */
     public function publish(): bool
