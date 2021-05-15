@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Resources;
 
+use App\Services\ArticleService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleCollectionRequest;
@@ -11,9 +12,21 @@ use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
 use App\Http\Requests\ArticleBulkDeleteRequest;
 use App\Models\Article;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleResourceController extends Controller
 {
+
+    /**
+     * @var ArticleService
+     */
+    private $articleService;
+
+    function __construct(ArticleService $articleService)
+    {
+        $this->articleService = $articleService;
+    }
+
     /**
      * @param ArticleCollectionRequest $request
      * @return ArticleResourceCollection
@@ -21,6 +34,7 @@ class ArticleResourceController extends Controller
     public function index(ArticleCollectionRequest $request): ArticleResourceCollection
     {
         $query = Article::query();
+        $query->where('author_id', $request->user()->id);
 
         if ($request->get('with_deleted', false)) {
             $query->withTrashed();
@@ -50,7 +64,7 @@ class ArticleResourceController extends Controller
             'category_id',
             'is_published'
         ]));
-        $article->author_id = 1;
+        $article->author_id = $request->user()->id;
         $article->save();
         return new ArticleResource($article);
     }
@@ -61,7 +75,11 @@ class ArticleResourceController extends Controller
      */
     public function show(int $id): ArticleResource
     {
-        return new ArticleResource(Article::with(['category', 'tags'])->findOrFail($id));
+        $article = Article::with(['category', 'tags'])
+            ->where('author_id', Auth::user()->id)
+            ->findOrFail($id);
+
+        return new ArticleResource($article);
     }
 
     /**
@@ -71,7 +89,7 @@ class ArticleResourceController extends Controller
      */
     public function update(ArticleUpdateRequest $request, int $id): ArticleResource
     {
-        $article = Article::findOrFail($id);
+        $article = Article::where('author_id', Auth::user()->id)->findOrFail($id);
         $article->fill($request->only([
             'title',
             'description',

@@ -38,11 +38,15 @@ Route::middleware('auth:sanctum')->group(function () {
             'comments' => 'CommentResourceController',
         ]);
 
-        Route::post('articles/publish/{id}', 'ArticleResourceController@publish');
-        Route::post('articles/draft/{id}', 'ArticleResourceController@draft');
-        Route::post('articles/bulk', 'ArticleResourceController@bulkAction');
+        Route::prefix('articles')->group(function () {
+            Route::post('publish/{id}', 'ArticleResourceController@publish');
+            Route::post('draft/{id}', 'ArticleResourceController@draft');
+            Route::post('bulk', 'ArticleResourceController@bulkAction');
+        });
 
-        Route::get('categories/{id}/possible_parent_categories', 'CategoryResourceController@getPossibleParentCategories');
+        Route::prefix('categories')->group(function () {
+            Route::get('{id}/able-parents', 'CategoryResourceController@getAbleParents');
+        });
     });
 });
 

@@ -62,7 +62,7 @@ class Category extends Model
      * Get the parent category of this
      * @return BelongsTo
      */
-    public function category(): BelongsTo
+    public function parent(): BelongsTo
     {
         return $this->belongsTo('App\Models\Category', 'parent_id');
     }

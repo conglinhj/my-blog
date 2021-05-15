@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Repositories\Article\ArticleRepositoryEloquent;
-use App\Repositories\Article\ArticleRepositoryInterface;
+use App\Repositories\Eloquent\ArticleRepositoryEloquent;
+use App\Repositories\Contracts\ArticleRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

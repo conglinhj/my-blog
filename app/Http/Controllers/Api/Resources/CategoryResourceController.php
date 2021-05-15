@@ -76,20 +76,23 @@ class CategoryResourceController extends Controller
      * @param int $id
      * @return CategoryResourceCollection
      */
-    public function getPossibleParentCategories(Request $request, int $id): CategoryResourceCollection
+    public function getAbleParents(Request $request, int $id): CategoryResourceCollection
     {
-        $category = Category::findOrFail($id);
-        return new CategoryResourceCollection(
-            Category::query()
-            ->where('id', '!=', $category->id)
-            ->where('id', '!=', $category->parent_id)
+        $category = Category::find($id);
+        $query    = Category::query();
+
+        if ($category) {
+            $query
+                ->where('id', '!=', $category->id)
+                ->where('level', '<=', $category->level);
+        }
+
+        $able_categories = $query
             ->when($request->get('name'), function ($query, $name) {
                 return $query->where('name', 'like', '%'.$name.'%');
             })
-            ->when($category->level, function ($query, $level) {
-                return $query->where('level', '<', $level);
-            })
-            ->get()
-        );
+            ->get();
+
+        return new CategoryResourceCollection($able_categories);
     }
 }

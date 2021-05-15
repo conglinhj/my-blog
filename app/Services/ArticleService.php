@@ -3,10 +3,11 @@
 
 namespace App\Services;
 
+use App\Http\Requests\ArticleCollectionRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleResourceCollection;
-use App\Repositories\Article\ArticleRepositoryEloquent;
-use App\Repositories\Article\ArticleRepositoryInterface;
+use App\Models\Article;
+use App\Repositories\Contracts\ArticleRepositoryInterface;
 
 class ArticleService
 {

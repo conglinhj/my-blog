@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Repositories\Article;
+namespace App\Repositories\Contracts;
 
+use App\Http\Requests\ArticleCollectionRequest;
 use App\Models\Article;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface ArticleRepositoryInterface {
 
@@ -42,4 +44,6 @@ interface ArticleRepositoryInterface {
      * @return Article[]
      */
     function getAllPublished(): array;
+
+    function paginate(ArticleCollectionRequest $request): LengthAwarePaginator;
 }

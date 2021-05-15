@@ -22,7 +22,8 @@ class CategoryResource extends JsonResource
             'parent_id' => $this->parent_id,
             'level' => $this->level,
             'created_at' => $this->created_at->timestamp,
-            'updated_at' => $this->updated_at->timestamp
+            'updated_at' => $this->updated_at->timestamp,
+            'parent' => $this->parent
         ];
     }
 }
